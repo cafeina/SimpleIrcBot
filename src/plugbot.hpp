@@ -2,12 +2,10 @@
 #include <map>
 #include <stdarg.h>
 #include <string>
-#include <thread>
 #include <vector>
 
-#include "plugin_manager.h"
-
-const int BUFFER_SIZE = 8192;
+#include "plugin_manager.hpp"
+#include "connection_manager.hpp"
 
 struct Command
 {
@@ -58,12 +56,11 @@ private:
     std::map<std::string, std::vector<std::string>> list_of_channels {};
     std::map<std::string, struct ServerDetails> server_info {};
     bool keep_reading;
-    std::thread reader;
+    //std::thread reader;
     PluginManager plugin_manager {};
+    ConnectionManager connection_manager {};
 
-    void write_data(const std::string&, const std::string&);
     const std::string parse_message(const std::string&);
-    void read_data();
     std::string fill_in_parameters(const std::vector<std::string>&, std::string&);
 };
 

@@ -13,9 +13,9 @@
 #include <sys/socket.h>
 #include <unistd.h>
 #include <vector>
-#include <thread>
 
-#include "plugbot.h"
+#include "plugbot.hpp"
+#include "connection.hpp"
 
 using namespace std;
 
@@ -23,14 +23,14 @@ PlugBot::PlugBot()
 {
 	keep_reading = true;
 	plugin_manager.scan_plugins();
-    reader = thread(&PlugBot::read_data, this);
+    //reader = thread(&PlugBot::read_data, this);
     cout << "started" << endl;
 }
 
 PlugBot::~PlugBot()
 {
     keep_reading = false;
-    reader.join();
+    //reader.join();
 }
 
 const string PlugBot::parse_message(const string &msg)
@@ -115,7 +115,7 @@ void PlugBot::exec_command(const string &server_nickname, const Command &cmd)
 	}
 
     string new_s = command_def;
-    write_data(server_nickname, new_s);
+    //write_data(server_nickname, new_s);
 }
 
 int PlugBot::connect_to_server(string server_nickname)
@@ -159,42 +159,26 @@ int PlugBot::connect_to_server(string server_nickname)
     sleep(3);
     string connection_string =
                         "NICK " + server_info.at(server_nickname).nick + "\r\n" + 
-                        "USER " + server_info.at(server_nickname).user;
-    write_data(server_nickname, connection_string);
-    sleep(3);
-}
+                        "USER " + server_info.at(server_nickname).user + "\r\n";
 
-void PlugBot::write_data(const string &server_nickname, const string &data)
-{
-    const string irc_data = data + "\r\n";    
-    int &sock = server_info.at(server_nickname).sock;
-    write(sock, irc_data.c_str(), irc_data.length());
-}
+    Connection c(sock);
+    connection_manager.add_connection(c);
 
-void PlugBot::read_data()
-{
-    cout << "\nReading..." << endl;
-    char buffer[BUFFER_SIZE];
-    keep_reading = true;
-    while (keep_reading) {
-        for(auto &server_details : server_info) {
-            int sock = server_details.second.sock;
-			fcntl(sock, F_SETFL, fcntl(sock, F_GETFL) | O_NONBLOCK);
-			read(sock, buffer, BUFFER_SIZE);
-            string received = buffer;
-            memset(buffer, 0, BUFFER_SIZE);
+    write(sock, connection_string.c_str(), connection_string.length());
 
-            if(!received.empty())
-                cout << parse_message(received);
+    string j = "JOIN #67ajutasd\r\n";
+    write(sock, j.c_str(), j.length());
 
-            if(received.substr(0, 4) == "PING") {
-                int pos = received.find("\r\n");
-                string pong_response = "PONG " + received.substr(4, pos);
-                cout << pong_response << endl;
-                write_data("freenode", pong_response);
-            }
-        }
-    }
+    string p = "PRIVMSG #67ajutasd :YO! MR. WHITE!\r\n";
+    write(sock, p.c_str(), p.length());
+
+    sleep(25);
+
+    string pp = "PART #67ajutasd";
+    write(sock, pp.c_str(), pp.length());
+
+    sleep(5);
+
 }
 
 string PlugBot::fill_in_parameters(const vector<string> &parameters, string &parameter_string)
