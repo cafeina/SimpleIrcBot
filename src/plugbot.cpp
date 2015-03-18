@@ -253,6 +253,8 @@ void PlugBot::process_request(string received_command)
     	parameter_str += " " + p;
     }
 
+    cout << "Received command: " << command << endl;
+
     PluginInfo p_info = plugin_manager.get_plugin(command);
 
     string final_string = p_info.path + p_info.name + parameter_str;

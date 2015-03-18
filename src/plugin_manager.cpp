@@ -81,12 +81,18 @@ void PluginManager::parse_plugin_def(const string &def_file)
     boost::filesystem::path p(def_file);
     boost::filesystem::path dir = p.parent_path();
 
+    string last_char = "\\";
 #ifdef __linux__
     executable = "./" + executable;
+    last_char = "/";
 #endif
 
-    string value = dir.c_str() + executable + " " + parameters;
+    string path = dir.c_str(); 
+    path += (path.back() == '/' or path.back() == '\\') ? "" : last_char;
+    string value = path + executable + " " + parameters;
 
-    PluginInfo plug = { name, parameters, "", dir.c_str() };
+    cout << path << endl;
+    PluginInfo plug = { name, parameters, "", path };
+    cout << "-> Added plugin: " << name << endl;
     plugins[name] = plug;
 }
