@@ -45,7 +45,6 @@ class PlugBot
 {
 public:
     PlugBot();
-    ~PlugBot();
 
     void add_server(std::string, const std::string, const std::string, const std::string, const std::string);
     int connect_to_server(std::string);

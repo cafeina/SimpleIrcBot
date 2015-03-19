@@ -21,16 +21,7 @@ using namespace std;
 
 PlugBot::PlugBot()
 {
-	keep_reading = true;
 	plugin_manager.scan_plugins();
-    //reader = thread(&PlugBot::read_data, this);
-    cout << "started" << endl;
-}
-
-PlugBot::~PlugBot()
-{
-    keep_reading = false;
-    //reader.join();
 }
 
 const string PlugBot::parse_message(const string &msg)
