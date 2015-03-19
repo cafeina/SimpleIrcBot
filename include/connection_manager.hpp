@@ -3,7 +3,7 @@
 
 #include <vector>
 
-#include "connection.hpp"
+#include <connection.hpp>
 
 class ConnectionManager
 {

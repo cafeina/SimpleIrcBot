@@ -4,7 +4,7 @@
 #include <sys/socket.h>
 #include <unistd.h>
 
-#include "connection.hpp"
+#include <connection.hpp>
 
 using namespace std;
 

@@ -14,8 +14,8 @@
 #include <unistd.h>
 #include <vector>
 
-#include "plugbot.hpp"
-#include "connection.hpp"
+#include <plugbot.hpp>
+#include <connection.hpp>
 
 using namespace std;
 

@@ -2,8 +2,8 @@
 #include <string>
 #include <unistd.h>
 
-#include "plugbot.hpp"
-#include "plugin_manager.hpp"
+#include <plugbot.hpp>
+#include <plugin_manager.hpp>
 
 using namespace std;
 

@@ -4,8 +4,8 @@
 #include <string>
 #include <vector>
 
-#include "plugin_manager.hpp"
-#include "connection_manager.hpp"
+#include <plugin_manager.hpp>
+#include <connection_manager.hpp>
 
 struct Command
 {
